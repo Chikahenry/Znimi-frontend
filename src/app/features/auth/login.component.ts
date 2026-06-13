@@ -1,19 +1,18 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, ReactiveFormsModule, FormsModule, Validators } from '@angular/forms';import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterLink],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule, RouterLink],
   template: `
     <div class="login-shell">
       <div class="login-left">
         <div class="brand">
           <div class="brand-icon">💰</div>
-          <h1>LoanMS</h1>
+          <h1>Znimi</h1>
           <p>Microfinance Management System</p>
         </div>
         <div class="stats-preview">

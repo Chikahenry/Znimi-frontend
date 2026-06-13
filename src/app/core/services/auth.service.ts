@@ -9,8 +9,7 @@ import { LoginRequest, LoginResponse } from '../models/models';
 export class AuthService {
   private readonly TOKEN_KEY = 'loan_token';
   private readonly USER_KEY = 'loan_user';
-  private currentUserSubject = new BehaviorSubject<LoginResponse | null>(this.getStoredUser());
-  currentUser = signal<LoginResponse | null>(null);
+  currentUser = signal<LoginResponse | null>(this.getStoredUser());
 
   constructor(private http: HttpClient, private router: Router) {}
 
@@ -20,7 +19,7 @@ export class AuthService {
         const userData = res.data || res;
         localStorage.setItem(this.TOKEN_KEY, userData.token);
         localStorage.setItem(this.USER_KEY, JSON.stringify(userData));
-        this.currentUserSubject.next(userData);
+        this.currentUser.set(userData);
       })
     );
   }
@@ -28,7 +27,7 @@ export class AuthService {
   logout(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.USER_KEY);
-    this.currentUserSubject.next(null);
+    this.currentUser.set(null);
     this.router.navigate(['/auth/login']);
   }
 
@@ -40,14 +39,14 @@ export class AuthService {
     return !!this.getToken();
   }
 
-  getCurrentUser(): LoginResponse | null {
-    return this.currentUserSubject.value;
-  }
-
   hasRole(role: string): boolean {
     const user = this.getCurrentUser();
     return user?.role?.toLowerCase() === role.toLowerCase();
   }
+
+  getCurrentUser(): LoginResponse | null {
+  return this.currentUser();
+}
 
   private getStoredUser(): LoginResponse | null {
     try {
